@@ -12,7 +12,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\""
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -26,6 +27,12 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^5.0.0",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "eslint": "^8.50.0",
+    "@typescript-eslint/parser": "^6.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.9.0"
   }
 }
