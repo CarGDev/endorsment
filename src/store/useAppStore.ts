@@ -11,6 +11,7 @@ type AppState = {
   currentUserId: string | null
   selectedPostId: string | null
   ui: UIState
+  endorsementHistory: { id: string; type: 'user' | 'post'; by?: string | null; toUserId?: string; postId?: string; specialty?: string; createdAt: number }[]
   seedData: () => void
   createUser: (data: { name: string; email: string; bio: string; specialties: string[] }) => User
   setCurrentUser: (id: string | null) => void
@@ -30,6 +31,7 @@ const useAppStore = create<AppState>((set, get) => ({
   currentUserId: null,
   selectedPostId: null,
   ui: { isCreatePostOpen: false },
+  endorsementHistory: [],
 
   seedData: () => {
     const users = seedUsers()
@@ -69,6 +71,7 @@ const useAppStore = create<AppState>((set, get) => ({
   },
 
   endorseUser: (userId, specialty) => {
+    const by = get().currentUserId ?? null
     set((state) => ({
       users: state.users.map((u) => {
         if (u.id !== userId) return u
@@ -76,14 +79,19 @@ const useAppStore = create<AppState>((set, get) => ({
         current[specialty] = (current[specialty] || 0) + 1
         return { ...u, endorsements: current }
       }),
+      endorsementHistory: [{ id: makeId(), type: 'user', by, toUserId: userId, specialty, createdAt: Date.now() }, ...(state.endorsementHistory || [])],
     }))
   },
 
+
   endorsePost: (postId) => {
+    const by = get().currentUserId ?? null
     set((state) => ({
       posts: state.posts.map((p) => (p.id === postId ? { ...p, endorsements: p.endorsements + 1 } : p)),
+      endorsementHistory: [{ id: makeId(), type: 'post', by, postId, createdAt: Date.now() }, ...(state.endorsementHistory || [])],
     }))
   },
+
 
   attachPDFToPost: (postId, file) => {
     const url = URL.createObjectURL(file)

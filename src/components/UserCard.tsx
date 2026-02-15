@@ -9,7 +9,7 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
       <div className="small">{user.bio}</div>
       <div style={{marginTop:8}}>
         {user.specialties.map((s) => (
-          <span key={s} className="tag">{s}</span>
+          <span key={s} className="tag">{s} ({user.endorsements[s] ?? 0})</span>
         ))}
       </div>
     </div>

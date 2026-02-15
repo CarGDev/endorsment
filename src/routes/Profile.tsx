@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import useAppStore from '../store/useAppStore'
 import EndorseButton from '../components/EndorseButton'
 import UserCard from '../components/UserCard'
+import { formatTime } from '../utils/fileHelpers'
 
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>()
@@ -10,6 +11,8 @@ const Profile: React.FC = () => {
   const posts = useAppStore((s) => s.posts.filter((p) => p.authorId === id))
   const endorseUser = useAppStore((s) => s.endorseUser)
   const currentUserId = useAppStore((s) => s.currentUserId)
+  const endorsementHistory = useAppStore((s) => s.endorsementHistory)
+  const allUsers = useAppStore((s) => s.users)
 
   if (!user) return <div className="card">User not found</div>
 
@@ -30,6 +33,20 @@ const Profile: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {(() => {
+        const recent = endorsementHistory.filter((e) => e.type === 'user' && e.toUserId === id).slice(0,5)
+        if (recent.length === 0) return null
+        return (
+          <div className="card" style={{marginTop:8}}>
+            <h4>Recent endorsements</h4>
+            {recent.map((r) => {
+              const byName = allUsers.find((u) => u.id === r.by)?.name ?? 'Someone'
+              return <div key={r.id} className="small">{byName} endorsed {r.specialty} · {formatTime(r.createdAt)} ago</div>
+            })}
+          </div>
+        )
+      })()}
 
       <h3>Posts</h3>
       {posts.length === 0 && <div className="card">No posts yet.</div>}
