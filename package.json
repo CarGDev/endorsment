@@ -1,13 +1,18 @@
 {
-  "name": "endorsement-frontend",
+  "name": "endorsment",
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "description": "Researcher Endorsement & Collaboration Platform — frontend-only mock app",
+  "homepage": "https://endorsment.cargdev.io",
+  "repository": "https://github.com/CarGDev/endorsment",
+  "author": "cargdev <carlos.gutierrez@carg.dev>",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\""
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -20,6 +25,7 @@
     "vite": "^5.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "^5.0.0"
+    "@vitejs/plugin-react": "^5.0.0",
+    "prettier": "^3.0.0"
   }
 }
