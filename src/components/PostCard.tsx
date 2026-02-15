@@ -8,6 +8,7 @@ import PDFPreview from './PDFPreview'
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const author = useAppStore((s) => s.users.find((u) => u.id === post.authorId))
   const endorsePost = useAppStore((s) => s.endorsePost)
+  const setSelectedPost = useAppStore((s) => s.setSelectedPost)
 
   if (!author) return null
 
@@ -27,7 +28,11 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
       <p style={{marginTop:8}}>{post.content}</p>
       {post.attachedPDF && (
         <div style={{marginTop:8}}>
-          <PDFPreview url={post.attachedPDF.url} name={post.attachedPDF.name} />
+          <div className="small">{post.attachedPDF.name}</div>
+          <div style={{marginTop:6,display:'flex',gap:8}}>
+            <button className="button" onClick={() => setSelectedPost(post.id)}>Open PDF</button>
+            <PDFPreview url={post.attachedPDF.url} name={post.attachedPDF.name} />
+          </div>
         </div>
       )}
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:8}}>

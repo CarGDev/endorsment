@@ -18,6 +18,7 @@ type AppState = {
   endorseUser: (userId: string, specialty: string) => void
   endorsePost: (postId: string) => void
   attachPDFToPost: (postId: string, file: File) => void
+  setSelectedPost: (id: string | null) => void
   toggleCreatePost: () => void
 }
 
@@ -90,6 +91,8 @@ const useAppStore = create<AppState>((set, get) => ({
       posts: state.posts.map((p) => (p.id === postId ? { ...p, attachedPDF: { name: file.name, url } } : p)),
     }))
   },
+
+  setSelectedPost: (id) => set(() => ({ selectedPostId: id })),
 
   toggleCreatePost: () => set((state) => ({ ui: { isCreatePostOpen: !state.ui.isCreatePostOpen } })),
 }))

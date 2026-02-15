@@ -6,6 +6,7 @@ import CreateUser from './routes/CreateUser'
 import PostDetail from './routes/PostDetail'
 import Navbar from './components/Navbar'
 import CreatePostModal from './components/CreatePostModal'
+import PDFModal from './components/PDFModal'
 import useAppStore from './store/useAppStore'
 
 const App: React.FC = () => {
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Navbar />
       </div>
       <CreatePostModal />
+      <PDFModal />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
