@@ -1,13 +1,13 @@
-export interface AttachedPDF {
+export interface AttachedMarkdown {
   name: string
-  url: string
+  content: string
 }
 
 export interface Post {
   id: string
   authorId: string
   content: string
-  attachedPDF?: AttachedPDF
+  attachedMarkdown?: AttachedMarkdown
   endorsements: number
   createdAt: number
 }

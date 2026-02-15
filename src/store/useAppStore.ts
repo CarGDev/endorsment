@@ -5,22 +5,30 @@ import { seedUsers, seedPosts } from '../mock/seedData'
 
 type UIState = { isCreatePostOpen: boolean }
 
+type EndorsementHistoryItem = { id: string; type: 'user' | 'post'; by?: string | null; toUserId?: string; postId?: string; specialty?: string; createdAt: number }
+
+type Notification = { id: string; message: string; type?: 'success' | 'error' | 'info'; createdAt: number }
+
 type AppState = {
   users: User[]
   posts: Post[]
   currentUserId: string | null
   selectedPostId: string | null
   ui: UIState
-  endorsementHistory: { id: string; type: 'user' | 'post'; by?: string | null; toUserId?: string; postId?: string; specialty?: string; createdAt: number }[]
+  endorsementHistory: EndorsementHistoryItem[]
+  notifications: Notification[]
   seedData: () => void
   createUser: (data: { name: string; email: string; bio: string; specialties: string[] }) => User
   setCurrentUser: (id: string | null) => void
-  createPost: (data: { authorId: string; content: string; attachedPDF?: { name: string; url: string } }) => Post
+  createPost: (data: { authorId: string; content: string; attachedMarkdown?: { name: string; content: string } }) => Post
   endorseUser: (userId: string, specialty: string) => void
   endorsePost: (postId: string) => void
   attachPDFToPost: (postId: string, file: File) => void
+  attachMarkdownToPost: (postId: string, md: { name: string; content: string }) => void
   setSelectedPost: (id: string | null) => void
   toggleCreatePost: () => void
+  addNotification: (message: string, type?: 'success' | 'error' | 'info', duration?: number) => void
+  removeNotification: (id: string) => void
 }
 
 const makeId = () => (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? (crypto as any).randomUUID() : 'id-' + Date.now())
@@ -32,6 +40,7 @@ const useAppStore = create<AppState>((set, get) => ({
   selectedPostId: null,
   ui: { isCreatePostOpen: false },
   endorsementHistory: [],
+  notifications: [],
 
   seedData: () => {
     const users = seedUsers()
@@ -62,7 +71,7 @@ const useAppStore = create<AppState>((set, get) => ({
       id,
       authorId: data.authorId,
       content: data.content,
-      attachedPDF: data.attachedPDF,
+      attachedMarkdown: data.attachedMarkdown,
       endorsements: 0,
       createdAt: Date.now(),
     }
@@ -83,7 +92,6 @@ const useAppStore = create<AppState>((set, get) => ({
     }))
   },
 
-
   endorsePost: (postId) => {
     const by = get().currentUserId ?? null
     set((state) => ({
@@ -92,7 +100,6 @@ const useAppStore = create<AppState>((set, get) => ({
     }))
   },
 
-
   attachPDFToPost: (postId, file) => {
     const url = URL.createObjectURL(file)
     set((state) => ({
@@ -100,9 +107,26 @@ const useAppStore = create<AppState>((set, get) => ({
     }))
   },
 
+  attachMarkdownToPost: (postId, md) => {
+    set((state) => ({
+      posts: state.posts.map((p) => (p.id === postId ? { ...p, attachedMarkdown: md } : p)),
+    }))
+  },
+
   setSelectedPost: (id) => set(() => ({ selectedPostId: id })),
 
   toggleCreatePost: () => set((state) => ({ ui: { isCreatePostOpen: !state.ui.isCreatePostOpen } })),
+
+  addNotification: (message, type = 'info', duration = 4000) => {
+    const id = makeId()
+    const notif = { id, message, type, createdAt: Date.now() }
+    set((state) => ({ notifications: [notif, ...(state.notifications || [])] }))
+    setTimeout(() => {
+      set((state) => ({ notifications: (state.notifications || []).filter((n) => n.id !== id) }))
+    }, duration)
+  },
+
+  removeNotification: (id) => set((state) => ({ notifications: (get().notifications || []).filter((n) => n.id !== id) })),
 }))
 
 export default useAppStore

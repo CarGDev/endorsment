@@ -1,5 +1,7 @@
 import React, { useState, startTransition } from 'react'
 import useAppStore from '../store/useAppStore'
+import { generateRandomMarkdown } from '../utils/fileHelpers'
+import MarkdownPreview from './MarkdownPreview'
 
 const CreatePostModal: React.FC = () => {
   const isOpen = useAppStore((s) => s.ui.isCreatePostOpen)
@@ -8,10 +10,15 @@ const CreatePostModal: React.FC = () => {
   const createPost = useAppStore((s) => s.createPost)
 
   const [content, setContent] = useState('')
-  const [file, setFile] = useState<File | null>(null)
+  const [attachedMarkdown, setAttachedMarkdown] = useState<{name:string,content:string} | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   if (!isOpen) return null
+
+  const onGenerate = () => {
+    const md = generateRandomMarkdown()
+    setAttachedMarkdown(md)
+  }
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -19,17 +26,16 @@ const CreatePostModal: React.FC = () => {
       setError('Select a user first')
       return
     }
-    if (!content.trim()) {
-      setError('Content required')
+    if (!content.trim() && !attachedMarkdown) {
+      setError('Content or markdown required')
       return
     }
     setError(null)
     startTransition(() => {
-      const attachedPDF = file ? { name: file.name, url: URL.createObjectURL(file) } : undefined
-      createPost({ authorId: currentUserId, content: content.trim(), attachedPDF })
+      createPost({ authorId: currentUserId, content: content.trim(), attachedMarkdown: attachedMarkdown ?? undefined })
       toggle()
       setContent('')
-      setFile(null)
+      setAttachedMarkdown(null)
     })
   }
 
@@ -40,14 +46,8 @@ const CreatePostModal: React.FC = () => {
         <form onSubmit={onSubmit}>
           <textarea className="textarea" value={content} onChange={(e) => setContent(e.target.value)} />
           <div style={{marginTop:8}}>
-            <input type="file" accept="application/pdf" onChange={(e) => {
-              const f = e.target.files && e.target.files[0]
-              if (f && f.type !== 'application/pdf') {
-                setError('Only PDF files allowed')
-                return
-              }
-              setFile(f ?? null)
-            }} />
+            <button type="button" className="button" onClick={onGenerate}>Generate Markdown</button>
+            {attachedMarkdown && <div style={{marginTop:8}}><MarkdownPreview content={attachedMarkdown.content} /></div>}
           </div>
           {error && <div style={{color:'red'}}>{error}</div>}
           <div style={{marginTop:8,display:'flex',justifyContent:'flex-end',gap:8}}>

@@ -55,9 +55,9 @@ export const seedUsers = (): User[] => {
 }
 
 export const seedPosts = (users: User[]): Post[] => {
-  const samplePDF = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+  const sampleMarkdown = `# Sample Paper\n\nThis is a sample markdown abstract.\n\n## Methods\n- Step 1\n- Step 2\n\n## Conclusion\nThis is a short conclusion.`
   const posts: Post[] = [
-    { id: 'p1', authorId: users[0].id, content: 'Working on a new transformer variant.', attachedPDF: { name: 'paper.pdf', url: samplePDF }, endorsements: 2, createdAt: now - 1000 * 60 * 30 },
+    { id: 'p1', authorId: users[0].id, content: 'Working on a new transformer variant.', attachedMarkdown: { name: 'paper.md', content: sampleMarkdown }, endorsements: 2, createdAt: now - 1000 * 60 * 30 },
     { id: 'p2', authorId: users[1].id, content: 'New results on memory consolidation in models.', endorsements: 1, createdAt: now - 1000 * 60 * 60 * 2 },
     { id: 'p3', authorId: users[2].id, content: 'Dataset release for coastal temperature anomalies.', endorsements: 0, createdAt: now - 1000 * 60 * 60 * 5 },
     { id: 'p4', authorId: users[3].id, content: 'Simulations of topological phases.', endorsements: 3, createdAt: now - 1000 * 60 * 60 * 24 },
@@ -65,7 +65,7 @@ export const seedPosts = (users: User[]): Post[] => {
     { id: 'p6', authorId: users[0].id, content: 'Trying a new optimization schedule.', endorsements: 1, createdAt: now - 1000 * 60 * 60 * 3 },
     { id: 'p7', authorId: users[1].id, content: 'Open-source code for preprocessing.', endorsements: 2, createdAt: now - 1000 * 60 * 60 * 6 },
     { id: 'p8', authorId: users[2].id, content: 'Collaboration call on climate econometrics.', endorsements: 0, createdAt: now - 1000 * 60 * 60 * 12 },
-    { id: 'p9', authorId: users[3].id, content: 'Preprint draft available.', attachedPDF: { name: 'draft.pdf', url: samplePDF }, endorsements: 1, createdAt: now - 1000 * 60 * 60 * 48 },
+    { id: 'p9', authorId: users[3].id, content: 'Preprint draft available.', attachedMarkdown: { name: 'draft.md', content: sampleMarkdown }, endorsements: 1, createdAt: now - 1000 * 60 * 60 * 48 },
     { id: 'p10', authorId: users[4].id, content: 'Survey on lab replication practices.', endorsements: 0, createdAt: now - 1000 * 60 * 60 * 72 },
   ]
   return posts

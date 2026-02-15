@@ -13,13 +13,30 @@ const Profile: React.FC = () => {
   const currentUserId = useAppStore((s) => s.currentUserId)
   const endorsementHistory = useAppStore((s) => s.endorsementHistory)
   const allUsers = useAppStore((s) => s.users)
+  const addNotification = useAppStore((s) => s.addNotification)
 
   if (!user) return <div className="card">User not found</div>
+
+  const onEmailClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (!currentUserId) {
+      addNotification('Select a current user (top-right) to endorse from.', 'error')
+      return
+    }
+    if (currentUserId === user.id) {
+      addNotification("You can't endorse yourself.", 'error')
+      return
+    }
+    const specialty = user.specialties[0] ?? 'General'
+    endorseUser(user.id, specialty)
+    addNotification(`Endorsed ${user.name} for ${specialty}`, 'success')
+  }
 
   return (
     <div className="container">
       <div className="card">
         <h2>{user.name}</h2>
+        <div className="small"><a href="#" onClick={onEmailClick}>{user.email}</a></div>
         <div className="small">{user.bio}</div>
         <div style={{marginTop:8}}>
           {user.specialties.map((s) => (

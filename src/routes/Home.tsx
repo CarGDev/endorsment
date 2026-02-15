@@ -8,6 +8,8 @@ const Home: React.FC = () => {
   const currentUserId = useAppStore((s) => s.currentUserId)
   const suggestions = users.filter((u) => u.id !== currentUserId).slice(0, 3)
 
+  const toggleCreatePost = useAppStore((s) => s.toggleCreatePost)
+
   return (
     <div className="feed-shell">
       <div className="container main-card" style={{display:'flex',gap:20,alignItems:'flex-start'}}>
@@ -28,14 +30,15 @@ const Home: React.FC = () => {
             <div className="small">Recent · Friends · Popular</div>
           </header>
 
-          <Feed />
-
-          <div className="create-input card" style={{marginTop:12}}>
-            <input placeholder="Share something..." style={{width:'100%',border:'none',outline:'none'}} />
+          <div className="create-input card" style={{marginBottom:12}}>
+            <input placeholder="Share something..." style={{width:'100%',border:'none',outline:'none'}} onFocus={() => toggleCreatePost()} />
             <div style={{display:'flex',justifyContent:'flex-end',marginTop:8}}>
-              <button className="button">Send</button>
+              <button className="button" onClick={() => toggleCreatePost()}>Send</button>
             </div>
           </div>
+
+          <Feed />
+
         </main>
 
         <aside className="right-column">

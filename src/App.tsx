@@ -6,7 +6,8 @@ import CreateUser from './routes/CreateUser'
 import PostDetail from './routes/PostDetail'
 import Navbar from './components/Navbar'
 import CreatePostModal from './components/CreatePostModal'
-import PDFModal from './components/PDFModal'
+import MarkdownModal from './components/MarkdownModal'
+import NotificationCenter from './components/NotificationCenter'
 import useAppStore from './store/useAppStore'
 
 const App: React.FC = () => {
@@ -20,8 +21,9 @@ const App: React.FC = () => {
       <div className="nav">
         <Navbar />
       </div>
+      <NotificationCenter />
       <CreatePostModal />
-      <PDFModal />
+      <MarkdownModal />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
