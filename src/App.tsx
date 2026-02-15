@@ -1,20 +1,20 @@
-import React, { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Home from './routes/Home'
-import Profile from './routes/Profile'
-import CreateUser from './routes/CreateUser'
-import PostDetail from './routes/PostDetail'
-import Navbar from './components/Navbar'
-import CreatePostModal from './components/CreatePostModal'
-import MarkdownModal from './components/MarkdownModal'
-import NotificationCenter from './components/NotificationCenter'
-import useAppStore from './store/useAppStore'
+import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './routes/Home';
+import Profile from './routes/Profile';
+import CreateUser from './routes/CreateUser';
+import PostDetail from './routes/PostDetail';
+import Navbar from './components/Navbar';
+import CreatePostModal from './components/CreatePostModal';
+import MarkdownModal from './components/MarkdownModal';
+import NotificationCenter from './components/NotificationCenter';
+import useAppStore from './store/useAppStore';
 
 const App: React.FC = () => {
-  const seedData = useAppStore((s) => s.seedData)
+  const seedData = useAppStore((s) => s.seedData);
   useEffect(() => {
-    seedData()
-  }, [seedData])
+    seedData();
+  }, [seedData]);
 
   return (
     <div className="app">
@@ -33,7 +33,7 @@ const App: React.FC = () => {
         </Routes>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -1,11 +1,11 @@
-import React from 'react'
-import useAppStore from '../store/useAppStore'
+import React from 'react';
+import useAppStore from '../store/useAppStore';
 
 const NotificationCenter: React.FC = () => {
-  const notifications = useAppStore((s) => s.notifications)
-  const removeNotification = useAppStore((s) => s.removeNotification)
+  const notifications = useAppStore((s) => s.notifications);
+  const removeNotification = useAppStore((s) => s.removeNotification);
 
-  if (!notifications || notifications.length === 0) return null
+  if (!notifications || notifications.length === 0) return null;
 
   return (
     <div className="notif-container">
@@ -16,7 +16,7 @@ const NotificationCenter: React.FC = () => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default NotificationCenter
+export default NotificationCenter;
